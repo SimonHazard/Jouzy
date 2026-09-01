@@ -1,4 +1,44 @@
+# Dependencies
+node_modules
+.pnp
+.pnp.js
+
 # Local environment files — never commit real values
 .env
 .env.*
 !.env.example
+.dev.vars
+.dev.vars.*
+
+# Build and generated files
+dist
+build
+*.tsbuildinfo
+apps/*/src/routeTree.gen.ts
+apps/*/src/paraglide
+apps/*/worker-configuration.d.ts
+apps/*/.output
+apps/*/.tanstack
+project.inlang/cache
+.wrangler
+
+# Test artifacts
+coverage
+.nyc_output
+playwright-report
+test-results
+
+# Editors and operating system
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs and local caches
+logs
+*.log
+.cache
+tmp
+temp
