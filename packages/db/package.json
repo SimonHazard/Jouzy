@@ -3,7 +3,16 @@
 	"version": "0.0.0",
 	"private": true,
 	"type": "module",
+	"dependencies": {
+		"drizzle-orm": "^0.45.2"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^5.20260831.1"
+	},
 	"exports": {
-		".": "./src/index.ts"
+		".": "./src/index.ts",
+		"./queries/admin": "./src/queries/admin/index.ts",
+		"./queries/public": "./src/queries/public/index.ts",
+		"./schema": "./src/schema.ts"
 	}
 }

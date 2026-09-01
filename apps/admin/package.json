@@ -9,6 +9,7 @@
 		"paraglide:compile": "paraglide-js compile --project ../../project.inlang --outdir ./src/paraglide --emit-ts-declarations"
 	},
 	"dependencies": {
+		"@jouzy/db": "workspace:*",
 		"@jouzy/ui": "workspace:*",
 		"@cloudflare/vite-plugin": "^1.54.3",
 		"@tailwindcss/vite": "^4.3.3",
