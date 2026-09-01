@@ -9,7 +9,7 @@ Exécuter dans l'ordre ci-dessous. Chaque agent lit son plan en entier, respecte
 | Plan | Résultat | Priorité | Effort | Dépend de | Statut |
 |---|---|---:|---:|---:|---|
 | [001](001-scaffold-monorepo.md) | Monorepo Bun avec deux apps TanStack Start et socle de vérification | P1 | L | — | DONE |
-| [002](002-cloudflare-data-foundation.md) | Runtime Workers, bindings, modèle D1/Drizzle et migrations | P1 | L | 001 | TODO |
+| [002](002-cloudflare-data-foundation.md) | Runtime Workers, bindings, modèle D1/Drizzle et migrations | P1 | L | 001 | DONE |
 | [003](003-access-admin-reference-data.md) | Identité Access, permissions et admin des référentiels | P1 | L | 002 | TODO |
 | [004](004-editorial-workflow.md) | Markdown sûr, médias R2 et cycle brouillon/publication | P1 | L | 003 | TODO |
 | [005](005-public-editorial-site.md) | Accueil, lecture, auteurs, thèmes et rendu public | P1 | L | 004 | TODO |

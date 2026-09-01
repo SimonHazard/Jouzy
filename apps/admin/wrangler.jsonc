@@ -4,6 +4,25 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
+  "vars": {
+    "ENVIRONMENT": "development",
+    "R2_PUBLIC_BASE_URL": "https://media.example.com"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "jouzy",
+      "database_id": "00000000-0000-0000-0000-000000000002",
+      "migrations_dir": "../../packages/db/migrations",
+      "migrations_pattern": "../../packages/db/migrations/*.sql"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "MEDIA",
+      "bucket_name": "jouzy-media-local"
+    }
+  ],
   "observability": {
     "enabled": true
   }

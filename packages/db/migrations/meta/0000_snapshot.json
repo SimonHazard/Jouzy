@@ -1,0 +1,1381 @@
+{
+	"version": "6",
+	"dialect": "sqlite",
+	"id": "6661c058-952c-4e89-9307-a6b02eb75c5b",
+	"prevId": "00000000-0000-0000-0000-000000000000",
+	"tables": {
+		"article_embeds": {
+			"name": "article_embeds",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"directive_id": {
+					"name": "directive_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"type": {
+					"name": "type",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"provider": {
+					"name": "provider",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"canonical_url": {
+					"name": "canonical_url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": 0
+				}
+			},
+			"indexes": {
+				"article_embeds_article_directive_unique": {
+					"name": "article_embeds_article_directive_unique",
+					"columns": ["article_id", "directive_id"],
+					"isUnique": true
+				},
+				"article_embeds_article_idx": {
+					"name": "article_embeds_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"article_embeds_article_id_articles_id_fk": {
+					"name": "article_embeds_article_id_articles_id_fk",
+					"tableFrom": "article_embeds",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"article_games": {
+			"name": "article_games",
+			"columns": {
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"game_id": {
+					"name": "game_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"is_primary": {
+					"name": "is_primary",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				}
+			},
+			"indexes": {
+				"article_games_article_idx": {
+					"name": "article_games_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				},
+				"article_games_game_idx": {
+					"name": "article_games_game_idx",
+					"columns": ["game_id"],
+					"isUnique": false
+				},
+				"article_games_primary_unique": {
+					"name": "article_games_primary_unique",
+					"columns": ["article_id"],
+					"isUnique": true,
+					"where": "\"article_games\".\"is_primary\" = 1"
+				}
+			},
+			"foreignKeys": {
+				"article_games_article_id_articles_id_fk": {
+					"name": "article_games_article_id_articles_id_fk",
+					"tableFrom": "article_games",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"article_games_game_id_games_id_fk": {
+					"name": "article_games_game_id_games_id_fk",
+					"tableFrom": "article_games",
+					"tableTo": "games",
+					"columnsFrom": ["game_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"article_games_article_id_game_id_pk": {
+					"columns": ["article_id", "game_id"],
+					"name": "article_games_article_id_game_id_pk"
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"article_links": {
+			"name": "article_links",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"provider": {
+					"name": "provider",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"label": {
+					"name": "label",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"url": {
+					"name": "url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"is_affiliate": {
+					"name": "is_affiliate",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": 0
+				}
+			},
+			"indexes": {
+				"article_links_article_idx": {
+					"name": "article_links_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"article_links_article_id_articles_id_fk": {
+					"name": "article_links_article_id_articles_id_fk",
+					"tableFrom": "article_links",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"article_media": {
+			"name": "article_media",
+			"columns": {
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"media_asset_id": {
+					"name": "media_asset_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"article_media_article_idx": {
+					"name": "article_media_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				},
+				"article_media_media_asset_idx": {
+					"name": "article_media_media_asset_idx",
+					"columns": ["media_asset_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"article_media_article_id_articles_id_fk": {
+					"name": "article_media_article_id_articles_id_fk",
+					"tableFrom": "article_media",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"article_media_media_asset_id_media_assets_id_fk": {
+					"name": "article_media_media_asset_id_media_assets_id_fk",
+					"tableFrom": "article_media",
+					"tableTo": "media_assets",
+					"columnsFrom": ["media_asset_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"article_media_article_id_media_asset_id_pk": {
+					"columns": ["article_id", "media_asset_id"],
+					"name": "article_media_article_id_media_asset_id_pk"
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"article_slug_redirects": {
+			"name": "article_slug_redirects",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"old_slug": {
+					"name": "old_slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"article_slug_redirects_old_slug_unique": {
+					"name": "article_slug_redirects_old_slug_unique",
+					"columns": ["old_slug"],
+					"isUnique": true
+				},
+				"article_slug_redirects_article_idx": {
+					"name": "article_slug_redirects_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"article_slug_redirects_article_id_articles_id_fk": {
+					"name": "article_slug_redirects_article_id_articles_id_fk",
+					"tableFrom": "article_slug_redirects",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"article_tags": {
+			"name": "article_tags",
+			"columns": {
+				"article_id": {
+					"name": "article_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"tag_id": {
+					"name": "tag_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"article_tags_article_idx": {
+					"name": "article_tags_article_idx",
+					"columns": ["article_id"],
+					"isUnique": false
+				},
+				"article_tags_tag_idx": {
+					"name": "article_tags_tag_idx",
+					"columns": ["tag_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"article_tags_article_id_articles_id_fk": {
+					"name": "article_tags_article_id_articles_id_fk",
+					"tableFrom": "article_tags",
+					"tableTo": "articles",
+					"columnsFrom": ["article_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"article_tags_tag_id_tags_id_fk": {
+					"name": "article_tags_tag_id_tags_id_fk",
+					"tableFrom": "article_tags",
+					"tableTo": "tags",
+					"columnsFrom": ["tag_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"article_tags_article_id_tag_id_pk": {
+					"columns": ["article_id", "tag_id"],
+					"name": "article_tags_article_id_tag_id_pk"
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"articles": {
+			"name": "articles",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"type": {
+					"name": "type",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"status": {
+					"name": "status",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"author_id": {
+					"name": "author_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"excerpt": {
+					"name": "excerpt",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "''"
+				},
+				"body_markdown": {
+					"name": "body_markdown",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "''"
+				},
+				"hero_media_id": {
+					"name": "hero_media_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"score_half_steps": {
+					"name": "score_half_steps",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"verdict": {
+					"name": "verdict",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"featured": {
+					"name": "featured",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"final_review_id": {
+					"name": "final_review_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"has_material_benefit": {
+					"name": "has_material_benefit",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": false
+				},
+				"disclosure": {
+					"name": "disclosure",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"published_at": {
+					"name": "published_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"articles_slug_unique": {
+					"name": "articles_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				},
+				"articles_status_published_at_idx": {
+					"name": "articles_status_published_at_idx",
+					"columns": ["status", "published_at"],
+					"isUnique": false
+				},
+				"articles_author_status_updated_at_idx": {
+					"name": "articles_author_status_updated_at_idx",
+					"columns": ["author_id", "status", "updated_at"],
+					"isUnique": false
+				},
+				"articles_title_idx": {
+					"name": "articles_title_idx",
+					"columns": ["title"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"articles_author_id_authors_id_fk": {
+					"name": "articles_author_id_authors_id_fk",
+					"tableFrom": "articles",
+					"tableTo": "authors",
+					"columnsFrom": ["author_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				},
+				"articles_hero_media_id_media_assets_id_fk": {
+					"name": "articles_hero_media_id_media_assets_id_fk",
+					"tableFrom": "articles",
+					"tableTo": "media_assets",
+					"columnsFrom": ["hero_media_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				},
+				"articles_final_review_id_articles_id_fk": {
+					"name": "articles_final_review_id_articles_id_fk",
+					"tableFrom": "articles",
+					"tableTo": "articles",
+					"columnsFrom": ["final_review_id"],
+					"columnsTo": ["id"],
+					"onDelete": "set null",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {
+				"articles_type_check": {
+					"name": "articles_type_check",
+					"value": "\"articles\".\"type\" IN ('review', 'first_impression', 'article')"
+				},
+				"articles_status_check": {
+					"name": "articles_status_check",
+					"value": "\"articles\".\"status\" IN ('draft', 'published')"
+				},
+				"articles_score_check": {
+					"name": "articles_score_check",
+					"value": "\"articles\".\"score_half_steps\" IS NULL OR (\"articles\".\"score_half_steps\" BETWEEN 0 AND 20 AND \"articles\".\"score_half_steps\" = CAST(\"articles\".\"score_half_steps\" AS INTEGER))"
+				}
+			}
+		},
+		"author_social_links": {
+			"name": "author_social_links",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"author_id": {
+					"name": "author_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"provider": {
+					"name": "provider",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"label": {
+					"name": "label",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"url": {
+					"name": "url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": 0
+				}
+			},
+			"indexes": {
+				"author_social_links_author_idx": {
+					"name": "author_social_links_author_idx",
+					"columns": ["author_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"author_social_links_author_id_authors_id_fk": {
+					"name": "author_social_links_author_id_authors_id_fk",
+					"tableFrom": "author_social_links",
+					"tableTo": "authors",
+					"columnsFrom": ["author_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"authors": {
+			"name": "authors",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"email": {
+					"name": "email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"role": {
+					"name": "role",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"status": {
+					"name": "status",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"first_name": {
+					"name": "first_name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"last_name": {
+					"name": "last_name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"display_name": {
+					"name": "display_name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"bio": {
+					"name": "bio",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": "''"
+				},
+				"avatar_media_id": {
+					"name": "avatar_media_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"public_email": {
+					"name": "public_email",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"authors_email_unique": {
+					"name": "authors_email_unique",
+					"columns": ["email"],
+					"isUnique": true
+				},
+				"authors_slug_unique": {
+					"name": "authors_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				},
+				"authors_status_updated_at_idx": {
+					"name": "authors_status_updated_at_idx",
+					"columns": ["status", "updated_at"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"authors_avatar_media_id_media_assets_id_fk": {
+					"name": "authors_avatar_media_id_media_assets_id_fk",
+					"tableFrom": "authors",
+					"tableTo": "media_assets",
+					"columnsFrom": ["avatar_media_id"],
+					"columnsTo": ["id"],
+					"onDelete": "set null",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {
+				"authors_role_check": {
+					"name": "authors_role_check",
+					"value": "\"authors\".\"role\" IN ('admin', 'author')"
+				},
+				"authors_status_check": {
+					"name": "authors_status_check",
+					"value": "\"authors\".\"status\" IN ('active', 'disabled')"
+				}
+			}
+		},
+		"game_store_links": {
+			"name": "game_store_links",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"game_id": {
+					"name": "game_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"platform": {
+					"name": "platform",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"provider": {
+					"name": "provider",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"label": {
+					"name": "label",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"url": {
+					"name": "url",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false,
+					"default": 0
+				}
+			},
+			"indexes": {
+				"game_store_links_game_idx": {
+					"name": "game_store_links_game_idx",
+					"columns": ["game_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"game_store_links_game_id_games_id_fk": {
+					"name": "game_store_links_game_id_games_id_fk",
+					"tableFrom": "game_store_links",
+					"tableTo": "games",
+					"columnsFrom": ["game_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"games": {
+			"name": "games",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"title": {
+					"name": "title",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"cover_media_id": {
+					"name": "cover_media_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"developer": {
+					"name": "developer",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"publisher": {
+					"name": "publisher",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"release_date": {
+					"name": "release_date",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"release_date_precision": {
+					"name": "release_date_precision",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"updated_at": {
+					"name": "updated_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"games_slug_unique": {
+					"name": "games_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				},
+				"games_title_idx": {
+					"name": "games_title_idx",
+					"columns": ["title"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"games_cover_media_id_media_assets_id_fk": {
+					"name": "games_cover_media_id_media_assets_id_fk",
+					"tableFrom": "games",
+					"tableTo": "media_assets",
+					"columnsFrom": ["cover_media_id"],
+					"columnsTo": ["id"],
+					"onDelete": "set null",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {
+				"games_release_date_precision_check": {
+					"name": "games_release_date_precision_check",
+					"value": "\"games\".\"release_date_precision\" IS NULL OR \"games\".\"release_date_precision\" IN ('day', 'month', 'year', 'unknown')"
+				}
+			}
+		},
+		"media_assets": {
+			"name": "media_assets",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"r2_key": {
+					"name": "r2_key",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"original_filename": {
+					"name": "original_filename",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"mime_type": {
+					"name": "mime_type",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"size_bytes": {
+					"name": "size_bytes",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"width": {
+					"name": "width",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"height": {
+					"name": "height",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"alt_text": {
+					"name": "alt_text",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"caption": {
+					"name": "caption",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"credit": {
+					"name": "credit",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				},
+				"uploaded_by_author_id": {
+					"name": "uploaded_by_author_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"created_at": {
+					"name": "created_at",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"media_assets_r2_key_unique": {
+					"name": "media_assets_r2_key_unique",
+					"columns": ["r2_key"],
+					"isUnique": true
+				},
+				"media_assets_uploaded_by_author_idx": {
+					"name": "media_assets_uploaded_by_author_idx",
+					"columns": ["uploaded_by_author_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"media_assets_uploaded_by_author_id_authors_id_fk": {
+					"name": "media_assets_uploaded_by_author_id_authors_id_fk",
+					"tableFrom": "media_assets",
+					"tableTo": "authors",
+					"columnsFrom": ["uploaded_by_author_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"game_genres": {
+			"name": "game_genres",
+			"columns": {
+				"game_id": {
+					"name": "game_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"genre_id": {
+					"name": "genre_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"game_genres_game_idx": {
+					"name": "game_genres_game_idx",
+					"columns": ["game_id"],
+					"isUnique": false
+				},
+				"game_genres_genre_idx": {
+					"name": "game_genres_genre_idx",
+					"columns": ["genre_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"game_genres_game_id_games_id_fk": {
+					"name": "game_genres_game_id_games_id_fk",
+					"tableFrom": "game_genres",
+					"tableTo": "games",
+					"columnsFrom": ["game_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"game_genres_genre_id_genres_id_fk": {
+					"name": "game_genres_genre_id_genres_id_fk",
+					"tableFrom": "game_genres",
+					"tableTo": "genres",
+					"columnsFrom": ["genre_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"game_genres_game_id_genre_id_pk": {
+					"columns": ["game_id", "genre_id"],
+					"name": "game_genres_game_id_genre_id_pk"
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"game_platforms": {
+			"name": "game_platforms",
+			"columns": {
+				"game_id": {
+					"name": "game_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"platform_id": {
+					"name": "platform_id",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"game_platforms_game_idx": {
+					"name": "game_platforms_game_idx",
+					"columns": ["game_id"],
+					"isUnique": false
+				},
+				"game_platforms_platform_idx": {
+					"name": "game_platforms_platform_idx",
+					"columns": ["platform_id"],
+					"isUnique": false
+				}
+			},
+			"foreignKeys": {
+				"game_platforms_game_id_games_id_fk": {
+					"name": "game_platforms_game_id_games_id_fk",
+					"tableFrom": "game_platforms",
+					"tableTo": "games",
+					"columnsFrom": ["game_id"],
+					"columnsTo": ["id"],
+					"onDelete": "cascade",
+					"onUpdate": "no action"
+				},
+				"game_platforms_platform_id_platforms_id_fk": {
+					"name": "game_platforms_platform_id_platforms_id_fk",
+					"tableFrom": "game_platforms",
+					"tableTo": "platforms",
+					"columnsFrom": ["platform_id"],
+					"columnsTo": ["id"],
+					"onDelete": "restrict",
+					"onUpdate": "no action"
+				}
+			},
+			"compositePrimaryKeys": {
+				"game_platforms_game_id_platform_id_pk": {
+					"columns": ["game_id", "platform_id"],
+					"name": "game_platforms_game_id_platform_id_pk"
+				}
+			},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"genres": {
+			"name": "genres",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"genres_slug_unique": {
+					"name": "genres_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"platforms": {
+			"name": "platforms",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"platforms_slug_unique": {
+					"name": "platforms_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		},
+		"tags": {
+			"name": "tags",
+			"columns": {
+				"id": {
+					"name": "id",
+					"type": "text",
+					"primaryKey": true,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"name": {
+					"name": "name",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"slug": {
+					"name": "slug",
+					"type": "text",
+					"primaryKey": false,
+					"notNull": true,
+					"autoincrement": false
+				},
+				"position": {
+					"name": "position",
+					"type": "integer",
+					"primaryKey": false,
+					"notNull": false,
+					"autoincrement": false
+				}
+			},
+			"indexes": {
+				"tags_slug_unique": {
+					"name": "tags_slug_unique",
+					"columns": ["slug"],
+					"isUnique": true
+				}
+			},
+			"foreignKeys": {},
+			"compositePrimaryKeys": {},
+			"uniqueConstraints": {},
+			"checkConstraints": {}
+		}
+	},
+	"views": {},
+	"enums": {},
+	"_meta": {
+		"schemas": {},
+		"tables": {},
+		"columns": {}
+	},
+	"internal": {
+		"indexes": {}
+	}
+}
