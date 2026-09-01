@@ -1,0 +1,5 @@
+{
+	"$schema": "https://inlang.com/schema/inlang-message-format",
+	"public_app_marker": "Jouzy — site public",
+	"admin_app_marker": "Jouzy — administration"
+}
