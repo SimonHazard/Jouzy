@@ -11,7 +11,7 @@ Exécuter dans l'ordre ci-dessous. Chaque agent lit son plan en entier, respecte
 | [001](001-scaffold-monorepo.md) | Monorepo Bun avec deux apps TanStack Start et socle de vérification | P1 | L | — | DONE |
 | [002](002-cloudflare-data-foundation.md) | Runtime Workers, bindings, modèle D1/Drizzle et migrations | P1 | L | 001 | DONE |
 | [003](003-access-admin-reference-data.md) | Identité Access, permissions et admin des référentiels | P1 | L | 002 | DONE |
-| [004](004-editorial-workflow.md) | Markdown sûr, médias R2 et cycle brouillon/publication | P1 | L | 003 | TODO |
+| [004](004-editorial-workflow.md) | Markdown sûr, médias R2 et cycle brouillon/publication | P1 | L | 003 | BLOCKED: tests mockés verts, validation navigateur auteur/mobile réelle différée |
 | [005](005-public-editorial-site.md) | Accueil, lecture, auteurs, thèmes et rendu public | P1 | L | 004 | TODO |
 | [006](006-discovery-seo-privacy.md) | Recherche, SEO, RSS, légal, analytics et preuve de confidentialité | P1 | L | 005 | TODO |
 | [007](007-production-handoff.md) | Provisionnement vérifié, déploiement manuel et runbook | P1 | M | 006 | TODO |

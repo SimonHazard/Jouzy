@@ -7,6 +7,13 @@ import {
 	FieldLabel,
 } from "@jouzy/ui/components/field";
 import { Input } from "@jouzy/ui/components/input";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@jouzy/ui/components/select";
 import { useState } from "react";
 
 export function TaxonomyCreateForm({
@@ -69,6 +76,7 @@ export function TaxonomyCreateForm({
 
 export function AuthorCreateForm({
 	onSubmit,
+	media = [],
 }: {
 	onSubmit: (values: {
 		email: string;
@@ -76,7 +84,9 @@ export function AuthorCreateForm({
 		lastName: string;
 		displayName: string;
 		slug: string;
+		avatarMediaId: string | null;
 	}) => Promise<void>;
+	media?: Array<{ id: string; altText: string }>;
 }) {
 	const [values, setValues] = useState({
 		email: "",
@@ -87,6 +97,7 @@ export function AuthorCreateForm({
 	});
 	const [error, setError] = useState<string | null>(null);
 	const [pending, setPending] = useState(false);
+	const [avatarMediaId, setAvatarMediaId] = useState<string | null>(null);
 	const update = (key: keyof typeof values, value: string) =>
 		setValues((current) => ({ ...current, [key]: value }));
 	return (
@@ -96,7 +107,7 @@ export function AuthorCreateForm({
 				setPending(true);
 				setError(null);
 				try {
-					await onSubmit(values);
+					await onSubmit({ ...values, avatarMediaId });
 					setValues({
 						email: "",
 						firstName: "",
@@ -104,6 +115,7 @@ export function AuthorCreateForm({
 						displayName: "",
 						slug: "",
 					});
+					setAvatarMediaId(null);
 				} catch {
 					setError(
 						"Vérifiez les champs et les éventuels conflits d’e-mail ou de slug.",
@@ -143,6 +155,26 @@ export function AuthorCreateForm({
 					L’e-mail doit aussi être ajouté manuellement à la politique Cloudflare
 					Access.
 				</FieldDescription>
+				{media.length > 0 && (
+					<Field>
+						<FieldLabel htmlFor="author-avatar">Avatar</FieldLabel>
+						<Select
+							value={avatarMediaId ?? undefined}
+							onValueChange={setAvatarMediaId}
+						>
+							<SelectTrigger id="author-avatar" className="w-full">
+								<SelectValue placeholder="Choisir une image" />
+							</SelectTrigger>
+							<SelectContent>
+								{media.map((asset) => (
+									<SelectItem key={asset.id} value={asset.id}>
+										{asset.altText}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
+					</Field>
+				)}
 				{error && <FieldError>{error}</FieldError>}
 				<Button type="submit" disabled={pending}>
 					{pending ? "Enregistrement…" : "Créer l’auteur"}
@@ -154,12 +186,19 @@ export function AuthorCreateForm({
 
 export function GameCreateForm({
 	onSubmit,
+	media = [],
 }: {
-	onSubmit: (values: { title: string; slug: string }) => Promise<void>;
+	onSubmit: (values: {
+		title: string;
+		slug: string;
+		coverMediaId: string | null;
+	}) => Promise<void>;
+	media?: Array<{ id: string; altText: string }>;
 }) {
 	const [values, setValues] = useState({ title: "", slug: "" });
 	const [error, setError] = useState<string | null>(null);
 	const [pending, setPending] = useState(false);
+	const [coverMediaId, setCoverMediaId] = useState<string | null>(null);
 	return (
 		<form
 			onSubmit={async (event) => {
@@ -167,10 +206,15 @@ export function GameCreateForm({
 				setPending(true);
 				setError(null);
 				try {
-					await onSubmit(values);
+					await onSubmit({ ...values, coverMediaId });
 					setValues({ title: "", slug: "" });
-				} catch {
-					setError("Vérifiez les champs et le conflit de slug.");
+					setCoverMediaId(null);
+				} catch (cause) {
+					setError(
+						cause instanceof Error
+							? cause.message
+							: "Vérifiez les champs et le conflit de slug.",
+					);
 				} finally {
 					setPending(false);
 				}
@@ -206,6 +250,26 @@ export function GameCreateForm({
 						Les plateformes, genres et liens boutique peuvent être ajoutés
 						depuis le même modèle serveur.
 					</FieldDescription>
+					{media.length > 0 && (
+						<Field>
+							<FieldLabel htmlFor="game-cover">Couverture</FieldLabel>
+							<Select
+								value={coverMediaId ?? undefined}
+								onValueChange={setCoverMediaId}
+							>
+								<SelectTrigger id="game-cover" className="w-full">
+									<SelectValue placeholder="Choisir une image" />
+								</SelectTrigger>
+								<SelectContent>
+									{media.map((asset) => (
+										<SelectItem key={asset.id} value={asset.id}>
+											{asset.altText}
+										</SelectItem>
+									))}
+								</SelectContent>
+							</Select>
+						</Field>
+					)}
 				</Field>
 				{error && <FieldError>{error}</FieldError>}
 				<Button type="submit" disabled={pending}>

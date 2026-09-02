@@ -20,6 +20,8 @@ import { type ReactNode, useState } from "react";
 
 const baseNavigation = [
 	{ to: "/" as const, label: "Tableau de bord" },
+	{ to: "/articles" as const, label: "Publications" },
+	{ to: "/media" as const, label: "Médias" },
 	{ to: "/games" as const, label: "Jeux" },
 	{ to: "/taxonomies" as const, label: "Taxonomies" },
 ];
@@ -51,12 +53,6 @@ function Navigation({
 					{item.label}
 				</Link>
 			))}
-			<span
-				aria-disabled="true"
-				className="cursor-not-allowed px-3 py-2 text-muted-foreground/60 text-sm"
-			>
-				Publications — prochain plan
-			</span>
 		</nav>
 	);
 }

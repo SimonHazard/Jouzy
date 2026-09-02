@@ -13,25 +13,34 @@ import {
 	createAuthorFn,
 	listAuthorsFn,
 } from "../../features/authors/server-functions.js";
+import { listMediaFn } from "../../features/media/server-functions.js";
 
 export const Route = createFileRoute("/_protected/authors")({
-	loader: () => listAuthorsFn(),
+	loader: async () => {
+		const [authors, media] = await Promise.all([
+			listAuthorsFn(),
+			listMediaFn(),
+		]);
+		return { authors, media };
+	},
 	errorComponent: ({ error }) => <AdminErrorState error={error} />,
 	component: AuthorsPage,
 });
 
 function AuthorsPage() {
-	const authors = Route.useLoaderData();
+	const { authors, media } = Route.useLoaderData();
 	const identity = Route.useRouteContext();
 	if (identity.role !== "admin")
 		return <AdminErrorState error={{ code: "FORBIDDEN" }} />;
-	return <AuthorsContent authors={authors} />;
+	return <AuthorsContent authors={authors} media={media} />;
 }
 
 export function AuthorsContent({
 	authors,
+	media = [],
 }: {
 	authors: Awaited<ReturnType<typeof listAuthorsFn>>;
+	media?: Awaited<ReturnType<typeof listMediaFn>>;
 }) {
 	return (
 		<main
@@ -92,10 +101,12 @@ export function AuthorsContent({
 					</CardHeader>
 					<CardContent>
 						<AuthorCreateForm
+							media={media}
 							onSubmit={async (values) => {
 								await createAuthorFn({
 									data: {
 										...values,
+										avatarMediaId: values.avatarMediaId,
 										role: "author",
 										status: "active",
 										bio: "",

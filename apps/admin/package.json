@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@cloudflare/vite-plugin": "^1.54.3",
+		"@jouzy/content": "workspace:*",
 		"@jouzy/db": "workspace:*",
 		"@jouzy/domain": "workspace:*",
 		"@jouzy/ui": "workspace:*",

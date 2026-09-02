@@ -1,6 +1,10 @@
 import type { GameInput } from "@jouzy/domain";
 import { asc, eq } from "drizzle-orm";
-import type { D1Transaction, JouzyDatabase } from "../../client.js";
+import {
+	type D1BatchStatement,
+	type JouzyDatabase,
+	runD1Batch,
+} from "../../client.js";
 import {
 	gameGenres,
 	gamePlatforms,
@@ -25,7 +29,7 @@ export type GameDto = {
 	storeLinks: Array<typeof gameStoreLinks.$inferSelect>;
 };
 
-type GameDatabase = JouzyDatabase | D1Transaction;
+type GameDatabase = JouzyDatabase;
 
 async function readGame(
 	db: GameDatabase,
@@ -82,34 +86,44 @@ export async function getGame(
 	return readGame(db, gameId);
 }
 
-async function insertRelations(
+function relationStatements(
 	db: GameDatabase,
 	gameId: string,
 	input: GameInput,
-): Promise<void> {
+): D1BatchStatement[] {
+	const statements: D1BatchStatement[] = [];
 	if (input.platformIds.length > 0) {
-		await db
-			.insert(gamePlatforms)
-			.values(input.platformIds.map((platformId) => ({ gameId, platformId })));
-	}
-	if (input.genreIds.length > 0) {
-		await db
-			.insert(gameGenres)
-			.values(input.genreIds.map((genreId) => ({ gameId, genreId })));
-	}
-	if (input.storeLinks.length > 0) {
-		await db.insert(gameStoreLinks).values(
-			input.storeLinks.map((link, index) => ({
-				id: crypto.randomUUID(),
-				gameId,
-				platform: link.platform,
-				provider: link.provider,
-				label: link.label,
-				url: link.url,
-				position: link.position ?? index,
-			})),
+		statements.push(
+			db
+				.insert(gamePlatforms)
+				.values(
+					input.platformIds.map((platformId) => ({ gameId, platformId })),
+				),
 		);
 	}
+	if (input.genreIds.length > 0) {
+		statements.push(
+			db
+				.insert(gameGenres)
+				.values(input.genreIds.map((genreId) => ({ gameId, genreId }))),
+		);
+	}
+	if (input.storeLinks.length > 0) {
+		statements.push(
+			db.insert(gameStoreLinks).values(
+				input.storeLinks.map((link, index) => ({
+					id: crypto.randomUUID(),
+					gameId,
+					platform: link.platform,
+					provider: link.provider,
+					label: link.label,
+					url: link.url,
+					position: link.position ?? index,
+				})),
+			),
+		);
+	}
+	return statements;
 }
 
 function gameValues(input: GameInput, gameId: string, now: number) {
@@ -121,6 +135,7 @@ function gameValues(input: GameInput, gameId: string, now: number) {
 		publisher: input.publisher ?? null,
 		releaseDate: input.releaseDate ?? null,
 		releaseDatePrecision: input.releaseDatePrecision ?? null,
+		coverMediaId: input.coverMediaId ?? null,
 		createdAt: now,
 		updatedAt: now,
 	} as const;
@@ -133,10 +148,10 @@ export async function createGame(
 ): Promise<GameDto> {
 	const gameId = crypto.randomUUID();
 	try {
-		await db.transaction(async (tx) => {
-			await tx.insert(games).values(gameValues(input, gameId, now));
-			await insertRelations(tx, gameId, input);
-		});
+		await runD1Batch(db, [
+			db.insert(games).values(gameValues(input, gameId, now)),
+			...relationStatements(db, gameId, input),
+		]);
 	} catch (error) {
 		throwDatabaseConflict(error, "slug");
 	}
@@ -152,14 +167,14 @@ export async function updateGame(
 	now = Date.now(),
 ): Promise<GameDto> {
 	try {
-		await db.transaction(async (tx) => {
-			const existing = await tx
-				.select({ id: games.id, createdAt: games.createdAt })
-				.from(games)
-				.where(eq(games.id, gameId))
-				.limit(1);
-			if (!existing[0]) throw notFound();
-			await tx
+		const existing = await db
+			.select({ id: games.id })
+			.from(games)
+			.where(eq(games.id, gameId))
+			.limit(1);
+		if (!existing[0]) throw notFound();
+		await runD1Batch(db, [
+			db
 				.update(games)
 				.set({
 					title: input.title,
@@ -168,14 +183,15 @@ export async function updateGame(
 					publisher: input.publisher ?? null,
 					releaseDate: input.releaseDate ?? null,
 					releaseDatePrecision: input.releaseDatePrecision ?? null,
+					coverMediaId: input.coverMediaId ?? null,
 					updatedAt: now,
 				})
-				.where(eq(games.id, gameId));
-			await tx.delete(gamePlatforms).where(eq(gamePlatforms.gameId, gameId));
-			await tx.delete(gameGenres).where(eq(gameGenres.gameId, gameId));
-			await tx.delete(gameStoreLinks).where(eq(gameStoreLinks.gameId, gameId));
-			await insertRelations(tx, gameId, input);
-		});
+				.where(eq(games.id, gameId)),
+			db.delete(gamePlatforms).where(eq(gamePlatforms.gameId, gameId)),
+			db.delete(gameGenres).where(eq(gameGenres.gameId, gameId)),
+			db.delete(gameStoreLinks).where(eq(gameStoreLinks.gameId, gameId)),
+			...relationStatements(db, gameId, input),
+		]);
 	} catch (error) {
 		throwDatabaseConflict(error, "slug");
 	}

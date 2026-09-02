@@ -13,15 +13,19 @@ import {
 	createGameFn,
 	listGamesFn,
 } from "../../features/games/server-functions.js";
+import { listMediaFn } from "../../features/media/server-functions.js";
 
 export const Route = createFileRoute("/_protected/games")({
-	loader: () => listGamesFn(),
+	loader: async () => {
+		const [games, media] = await Promise.all([listGamesFn(), listMediaFn()]);
+		return { games, media };
+	},
 	errorComponent: ({ error }) => <AdminErrorState error={error} />,
 	component: GamesPage,
 });
 
 function GamesPage() {
-	const games = Route.useLoaderData();
+	const { games, media } = Route.useLoaderData();
 	const identity = Route.useRouteContext();
 	return (
 		<main
@@ -82,10 +86,12 @@ function GamesPage() {
 						</CardHeader>
 						<CardContent>
 							<GameCreateForm
+								media={media}
 								onSubmit={async (values) => {
 									await createGameFn({
 										data: {
 											...values,
+											coverMediaId: values.coverMediaId,
 											developer: null,
 											publisher: null,
 											releaseDate: null,

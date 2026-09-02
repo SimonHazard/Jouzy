@@ -64,6 +64,24 @@ export async function findAuthorByEmail(
 	return result[0] ?? null;
 }
 
+export async function findAuthorById(
+	db: AdminDatabase,
+	authorId: string,
+): Promise<AuthorIdentityRecord | null> {
+	const result = await db
+		.select({
+			id: authors.id,
+			email: authors.email,
+			role: authors.role,
+			status: authors.status,
+			displayName: authors.displayName,
+		})
+		.from(authors)
+		.where(eq(authors.id, authorId))
+		.limit(1);
+	return result[0] ?? null;
+}
+
 export async function listAuthors(
 	db: AdminDatabase,
 ): Promise<AuthorPublicDto[]> {
@@ -123,6 +141,7 @@ async function insertAuthor(
 		lastName: input.lastName,
 		displayName: input.displayName,
 		bio: input.bio,
+		avatarMediaId: input.avatarMediaId ?? null,
 		publicEmail: input.publicEmail ?? null,
 		createdAt: now,
 		updatedAt: now,
@@ -182,6 +201,7 @@ export async function updateAuthor(
 					lastName: input.lastName,
 					displayName: input.displayName,
 					bio: input.bio,
+					avatarMediaId: input.avatarMediaId ?? null,
 					publicEmail: input.publicEmail ?? null,
 					updatedAt: now,
 				})

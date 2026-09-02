@@ -32,6 +32,7 @@ export const authorInputSchema = z.object({
 		.transform((value) => (value ? normalizeEmail(value) : null))
 		.nullable()
 		.optional(),
+	avatarMediaId: z.string().min(1).nullable().optional(),
 	socialLinks: z.array(socialLinkInputSchema).max(20).default([]),
 });
 
@@ -57,6 +58,7 @@ export const gameStoreLinkInputSchema = z.object({
 export const gameInputSchema = z.object({
 	title: requiredText("Le titre"),
 	slug: z.string().trim().transform(normalizeSlug),
+	coverMediaId: z.string().min(1).nullable().optional(),
 	developer: z.string().trim().max(300).nullable().optional(),
 	publisher: z.string().trim().max(300).nullable().optional(),
 	releaseDate: z.string().trim().max(10).nullable().optional(),
