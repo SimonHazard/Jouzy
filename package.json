@@ -24,17 +24,19 @@
 	"scripts": {
 		"lint": "biome check .",
 		"paraglide:compile": "bun run --cwd apps/web paraglide:compile && bun run --cwd apps/admin paraglide:compile",
-		"typecheck": "bun run paraglide:compile && bun run --cwd apps/web build && bun run --cwd apps/admin build && tsc -p packages/config/tsconfig.json --pretty false --noEmit && tsc -p packages/content/tsconfig.json --pretty false --noEmit && tsc -p packages/db/tsconfig.json --pretty false --noEmit && tsc -p packages/domain/tsconfig.json --pretty false --noEmit && tsc -p packages/ui/tsconfig.json --pretty false --noEmit && tsc -p apps/web/tsconfig.json --pretty false --noEmit && tsc -p apps/admin/tsconfig.json --pretty false --noEmit",
+		"typecheck": "bun run paraglide:compile && bun run --cwd apps/web build && bun run --cwd apps/admin build && tsc -p packages/config/tsconfig.json --pretty false --noEmit && tsc -p packages/content/tsconfig.json --pretty false --noEmit && tsc -p packages/db/tsconfig.json --pretty false --noEmit && tsc -p packages/domain/tsconfig.json --pretty false --noEmit && tsc -b packages/ui --force --emitDeclarationOnly --pretty false && tsc -p packages/ui/tsconfig.json --pretty false --noEmit && tsc -p apps/web/tsconfig.json --pretty false --noEmit && tsc -p apps/admin/tsconfig.json --pretty false --noEmit",
 		"test": "bun run paraglide:compile && vitest run --config packages/config/vitest.config.ts",
 		"build": "bun run --cwd apps/web build && bun run --cwd apps/admin build",
 		"cf:typegen": "bun run --cwd apps/web cf:typegen && bun run --cwd apps/admin cf:typegen",
 		"db:generate": "drizzle-kit generate --config drizzle.config.ts",
 		"db:migrate:local": "bun run --cwd apps/admin wrangler d1 migrations apply jouzy --local --config wrangler.jsonc",
 		"db:check:local": "bun run scripts/check-local-d1.ts",
+		"admin:bootstrap": "bun run scripts/bootstrap-admin.ts",
 		"check": "bun run lint && bun run typecheck && bun run test && bun run build",
 		"verify:env": "bun run scripts/verify-env-contract.ts"
 	},
 	"dependencies": {
+		"@jouzy/domain": "workspace:*",
 		"drizzle-orm": "^0.45.2",
 		"zod": "catalog:"
 	},
